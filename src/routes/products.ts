@@ -52,7 +52,7 @@ export async function productRoutes(fastify: FastifyInstance) {
       }
       if (in_stock !== undefined) {
         conditions.push(`in_stock = $${i++}`);
-        params.push(in_stock === "true");
+        params.push(in_stock === true);
       }
       if (search) {
         conditions.push(`(name ILIKE $${i} OR brand ILIKE $${i})`);

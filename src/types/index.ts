@@ -68,13 +68,12 @@ export interface ProductParams {
 export interface ProductQuery {
   category?: string;
   brand?: string;
-  in_stock?: string;
   search?: string;
   page?: string;
   limit?: string;
   tag?: string;
   priceRange?: string;
-  inStock?: boolean;
+  in_stock?: boolean;
 }
 
 export interface CreateProductBody {
