@@ -2,8 +2,9 @@ import Fastify, { FastifyError } from "fastify";
 import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
 import { env } from "./config/env";
-import { authMiddleware } from "./middleware/auth";
+import { requireAdmin } from "./middleware/auth";
 import { productRoutes } from "./routes/products";
+import { meRoutes } from "./routes/me";
 // import { orderRoutes } from "./routes/orders";
 // import { deliveryRoutes } from "./routes/delivery";
 // import { pickupRoutes } from "./routes/pickup";
@@ -35,13 +36,21 @@ app.register(multipart, {
 
 app.addHook("preHandler", async (req, reply) => {
   if (req.url === "/health") return;
-  await authMiddleware(req, reply);
+  await requireAdmin(req, reply);
 });
 
 
 app.get("/health", async () => ({ status: "ok", timestamp: new Date().toISOString() }));
 
-
+app.register(
+  async (admin) => {
+    admin.addHook("onRequest", requireAdmin);
+    admin.register(meRoutes);
+    admin.register(productRoutes);
+    // admin.register(orderRoutes);
+  },
+  { prefix: "/admin" }
+);
 app.register(productRoutes,   { prefix: "/admin" });
 // app.register(orderRoutes,     { prefix: "/admin" });
 // app.register(deliveryRoutes,  { prefix: "/admin" });
