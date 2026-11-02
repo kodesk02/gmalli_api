@@ -51,7 +51,7 @@ app.register(
   },
   { prefix: "/admin" }
 );
-app.register(productRoutes,   { prefix: "/admin" });
+// app.register(productRoutes,   { prefix: "/admin" });
 // app.register(orderRoutes,     { prefix: "/admin" });
 // app.register(deliveryRoutes,  { prefix: "/admin" });
 // app.register(pickupRoutes,    { prefix: "/admin" });
