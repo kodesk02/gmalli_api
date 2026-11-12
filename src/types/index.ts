@@ -82,6 +82,7 @@ export interface CreateProductBody {
   category: string;
   price: number;
   price_range: string;
+  description: string;
   image: string;
   in_stock: boolean;
   tags: string[];
