@@ -13,17 +13,13 @@ import { uploadRoutes } from "./routes/uploads";
 
 const app = Fastify({
   logger: {
-    transport: env.nodeEnv === "development"
-      ? { target: "pino-pretty" }
-      : undefined,
+    transport:
+      env.nodeEnv === "development" ? { target: "pino-pretty" } : undefined,
   },
 });
 
 app.register(cors, {
-  origin: [
-    env.adminFrontendUrl,
-    "http://localhost:3003",
-  ],
+  origin: [env.adminFrontendUrl, "http://localhost:3003"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -33,14 +29,16 @@ app.register(multipart, {
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-
 app.addHook("preHandler", async (req, reply) => {
   if (req.url === "/health") return;
   await requireAdmin(req, reply);
 });
 
-
-app.get("/health", async () => ({ status: "ok", timestamp: new Date().toISOString() }));
+app.get("/health", async () => ({
+  status: "ok",
+  commit: process.env.RENDER_GIT_COMMIT?.slice(0, 7) ?? "local",
+  timestamp: new Date().toISOString(),
+}));
 
 app.register(
   async (admin) => {
@@ -50,7 +48,7 @@ app.register(
     admin.register(uploadRoutes);
     // admin.register(orderRoutes);
   },
-  { prefix: "/admin" }
+  { prefix: "/admin" },
 );
 // app.register(productRoutes,   { prefix: "/admin" });
 // app.register(orderRoutes,     { prefix: "/admin" });

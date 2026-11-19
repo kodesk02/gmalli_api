@@ -17,11 +17,11 @@ function parseEmailList(raw: string): string[] {
 }
 
 export const env = {
-  port:               parseInt(process.env.PORT ?? "3002", 10),
-  nodeEnv:            process.env.NODE_ENV ?? "development",
-  databaseUrl:        required("DATABASE_URL"),
-  supabaseUrl:        required("SUPABASE_URL"),
+  port: parseInt(process.env.PORT ?? "3002", 10),
+  nodeEnv: process.env.NODE_ENV ?? "development",
+  databaseUrl: required("DATABASE_URL"),
+  supabaseUrl: required("SUPABASE_URL"),
   supabaseServiceKey: required("SUPABASE_SERVICE_ROLE_KEY"),
-  adminFrontendUrl:   process.env.ADMIN_FRONTEND_URL ?? "http://localhost:3003",
-  adminEmails:        parseEmailList(required("ADMIN_EMAILS")),
+  adminFrontendUrl: process.env.ADMIN_FRONTEND_URL ?? "http://localhost:3003",
+  adminEmails: parseEmailList(required("ADMIN_EMAILS")),
 } as const;
