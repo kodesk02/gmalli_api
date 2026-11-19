@@ -142,8 +142,8 @@ export async function productRoutes(fastify: FastifyInstance) {
 
       const result = await pool.query(
         `INSERT INTO products
-           (name, brand, category, price, price_range, image, in_stock, tags)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+           (name, brand, category, price, price_range ,description,  image, in_stock, tags)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          RETURNING *`,
         [
           name.trim(),

@@ -9,7 +9,7 @@ import { meRoutes } from "./routes/me";
 // import { deliveryRoutes } from "./routes/delivery";
 // import { pickupRoutes } from "./routes/pickup";
 // import { analyticsRoutes } from "./routes/analytics";
-// import { uploadRoutes } from "./routes/uploads";
+import { uploadRoutes } from "./routes/uploads";
 
 const app = Fastify({
   logger: {
@@ -47,6 +47,7 @@ app.register(
     admin.addHook("onRequest", requireAdmin);
     admin.register(meRoutes);
     admin.register(productRoutes);
+    admin.register(uploadRoutes);
     // admin.register(orderRoutes);
   },
   { prefix: "/admin" }
