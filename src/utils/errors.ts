@@ -16,11 +16,12 @@ interface ErrorResponse {
 const PG_INVALID_TEXT_REPRESENTATION = "22P02"; // e.g. a malformed uuid
 const GENERIC_MESSAGE = "Something went wrong on our side. Please try again.";
 
-function readProp(error: Error, key: string): unknown {
-  return (error as unknown as Record<string, unknown>)[key];
+function readProp(error: unknown, key: string): unknown {
+  if (typeof error !== "object" || error === null) return undefined;
+  return (error as Record<string, unknown>)[key];
 }
 
-export function toErrorResponse(error: Error): ErrorResponse {
+export function toErrorResponse(error: unknown): ErrorResponse {
   if (error instanceof AppError) {
     return { statusCode: error.statusCode, message: error.message };
   }
@@ -30,8 +31,14 @@ export function toErrorResponse(error: Error): ErrorResponse {
   }
 
   const statusCode = readProp(error, "statusCode");
-  if (typeof statusCode === "number" && statusCode >= 400 && statusCode < 500) {
-    return { statusCode, message: error.message };
+  const message = readProp(error, "message");
+  if (
+    typeof statusCode === "number" &&
+    statusCode >= 400 &&
+    statusCode < 500 &&
+    typeof message === "string"
+  ) {
+    return { statusCode, message };
   }
 
   return { statusCode: 500, message: GENERIC_MESSAGE };
