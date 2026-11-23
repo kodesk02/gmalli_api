@@ -6,7 +6,7 @@ import { requireAdmin } from "./middleware/auth";
 import { meRoutes } from "./routes/me";
 import { productRoutes } from "./routes/products";
 import { toErrorResponse } from "./utils/errors";
-
+import multipart from "@fastify/multipart";
 
 const app = Fastify({
   trustProxy: true, 
@@ -22,6 +22,7 @@ app.register(cors, {
 });
 
 app.register(rateLimit, { max: 120, timeWindow: "1 minute" });
+app.register(multipart, { limits: { fileSize: 5 * 1024 * 1024 } });
 
 app.setErrorHandler((error, req, reply) => {
   const { statusCode, message } = toErrorResponse(error);
