@@ -7,6 +7,7 @@ import { meRoutes } from "./routes/me";
 import { productRoutes } from "./routes/products";
 import { toErrorResponse } from "./utils/errors";
 import multipart from "@fastify/multipart";
+import { uploadRoutes } from "./routes/uploads";
 
 const app = Fastify({
   trustProxy: true, 
@@ -41,6 +42,7 @@ app.register(
     admin.addHook("onRequest", requireAdmin);
     admin.register(meRoutes);
     admin.register(productRoutes);
+    admin.register(uploadRoutes);
   },
   { prefix: "/admin" }
 );
